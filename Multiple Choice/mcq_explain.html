@@ -1,0 +1,202 @@
+
+<style>
+.nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+.nav-btn { padding: 5px 13px; font-size: 13px; border: 0.5px solid var(--color-border-secondary); border-radius: 99px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); }
+.nav-btn.active { background: var(--color-background-tertiary); color: var(--color-text-primary); font-weight: 500; border-color: var(--color-border-primary); }
+.qpanel { display: none; }
+.qpanel.active { display: block; }
+.section-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin: 18px 0 6px; }
+.goal-box { background: var(--color-background-info); border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 13px; color: var(--color-text-info); margin-bottom: 14px; }
+.code-block { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 12px 14px; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; margin: 0 0 10px; overflow-x: auto; }
+.line-explain { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; font-size: 13px; }
+.code-inline { font-family: var(--font-mono); font-size: 12px; background: var(--color-background-secondary); padding: 1px 6px; border-radius: 4px; color: var(--color-text-primary); white-space: nowrap; }
+.arrow { color: var(--color-text-tertiary); margin-top: 1px; flex-shrink: 0; }
+.explain-text { color: var(--color-text-secondary); line-height: 1.6; }
+.step { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-start; }
+.step-num { width: 22px; height: 22px; border-radius: 50%; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; color: var(--color-text-secondary); }
+.step-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+.join-diagram { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+.table-pill { padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 500; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); color: var(--color-text-primary); }
+.join-arrow { font-size: 12px; color: var(--color-text-tertiary); }
+.join-key { font-size: 11px; color: var(--color-text-tertiary); font-family: var(--font-mono); }
+</style>
+
+<div style="padding:1rem 0;">
+
+<div class="nav">
+  <div class="nav-btn active" onclick="showQ('q1',this)">Q1</div>
+  <div class="nav-btn" onclick="showQ('q2',this)">Q2</div>
+  <div class="nav-btn" onclick="showQ('q3',this)">Q3</div>
+  <div class="nav-btn" onclick="showQ('q4',this)">Q4</div>
+  <div class="nav-btn" onclick="showQ('q5',this)">Q5</div>
+  <div class="nav-btn" onclick="showQ('q6',this)">Q6</div>
+  <div class="nav-btn" onclick="showQ('q7',this)">Q7</div>
+  <div class="nav-btn" onclick="showQ('q8',this)">Q8</div>
+  <div class="nav-btn" onclick="showQ('q9',this)">Q9</div>
+  <div class="nav-btn" onclick="showQ('q10',this)">Q10</div>
+</div>
+
+<div id="q1" class="qpanel active">
+  <div class="goal-box">Mục tiêu: Tìm trung vị số ngày giữa 2 đơn liên tiếp của cùng 1 khách có hơn 1 đơn</div>
+  <div class="section-label">Các bước tư duy</div>
+  <div class="step"><div class="step-num">1</div><div class="step-body">Sắp xếp đơn hàng theo từng khách, theo thứ tự ngày tăng dần</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-body">Tính khoảng cách (gap) giữa đơn thứ N và đơn thứ N-1 của cùng khách</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-body">Dòng nào gap = null thì là đơn đầu tiên → loại ra</div></div>
+  <div class="step"><div class="step-num">4</div><div class="step-body">Tính median của tất cả gap còn lại</div></div>
+  <div class="section-label">Giải thích từng dòng</div>
+  <div class="code-block">o = orders.sort_values(["customer_id","order_date"])</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Sắp xếp bảng orders: ưu tiên nhóm theo <span class="code-inline">customer_id</span> trước, trong cùng khách thì sắp theo <span class="code-inline">order_date</span> tăng dần. Như vậy các đơn của cùng 1 khách nằm liền nhau theo thứ tự thời gian.</span></div>
+  <div class="code-block">o["gap"] = o.groupby("customer_id")["order_date"].diff().dt.days</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text"><span class="code-inline">groupby("customer_id")</span>: nhóm theo khách. <span class="code-inline">.diff()</span>: lấy hiệu ngày của dòng hiện tại trừ dòng trước trong cùng nhóm. <span class="code-inline">.dt.days</span>: chuyển từ timedelta sang số nguyên (số ngày). Dòng đầu tiên của mỗi khách sẽ ra NaN vì không có dòng trước.</span></div>
+  <div class="code-block">multi = o[o["gap"].notna()]</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Lọc chỉ giữ những dòng có gap khác null, tức là loại bỏ đơn hàng đầu tiên của mỗi khách. Kết quả là chỉ còn khách có ≥2 đơn.</span></div>
+  <div class="code-block">multi["gap"].median()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Tính trung vị (median) — giá trị ở giữa khi sắp xếp tất cả gap từ nhỏ đến lớn. So sánh với 30 / 90 / 180 / 365 để chọn đáp án.</span></div>
+</div>
+
+<div id="q2" class="qpanel">
+  <div class="goal-box">Mục tiêu: Segment nào có gross margin trung bình = (price − cogs) / price cao nhất</div>
+  <div class="section-label">Các bước tư duy</div>
+  <div class="step"><div class="step-num">1</div><div class="step-body">Áp công thức margin cho từng sản phẩm</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-body">Nhóm theo segment, tính trung bình margin trong mỗi nhóm</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-body">Lấy segment có giá trị lớn nhất</div></div>
+  <div class="section-label">Giải thích từng dòng</div>
+  <div class="code-block">products["margin"] = (products["price"] - products["cogs"]) / products["price"]</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Tạo cột mới <span class="code-inline">margin</span> cho mỗi sản phẩm. Pandas tự tính phép tính này cho tất cả dòng cùng lúc — không cần vòng lặp.</span></div>
+  <div class="code-block">products.groupby("segment")["margin"].mean()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text"><span class="code-inline">groupby("segment")</span>: nhóm các sản phẩm theo phân khúc (Premium, Standard...). <span class="code-inline">["margin"].mean()</span>: tính trung bình margin trong mỗi nhóm.</span></div>
+  <div class="code-block">.idxmax()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Trả về tên nhóm (segment) có giá trị mean cao nhất — không phải giá trị, mà là tên nhóm.</span></div>
+</div>
+
+<div id="q3" class="qpanel">
+  <div class="goal-box">Mục tiêu: Lý do trả hàng nhiều nhất trong các sản phẩm thuộc danh mục Streetwear</div>
+  <div class="section-label">Tại sao phải join 2 bảng?</div>
+  <div class="join-diagram">
+    <div class="table-pill">returns.csv</div>
+    <div style="text-align:center"><div class="join-arrow">——join——</div><div class="join-key">product_id</div></div>
+    <div class="table-pill">products.csv</div>
+  </div>
+  <div style="font-size:13px; color:var(--color-text-secondary); margin-bottom:14px;">Bảng <span class="code-inline">returns</span> có <span class="code-inline">return_reason</span> nhưng không có <span class="code-inline">category</span>. Bảng <span class="code-inline">products</span> có <span class="code-inline">category</span> nhưng không có lý do trả. Phải ghép 2 bảng qua <span class="code-inline">product_id</span>.</div>
+  <div class="section-label">Giải thích từng dòng</div>
+  <div class="code-block">merged = returns.merge(products[["product_id","category"]], on="product_id")</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text"><span class="code-inline">products[["product_id","category"]]</span>: chỉ lấy 2 cột cần thiết từ products (tránh thừa cột). <span class="code-inline">.merge(..., on="product_id")</span>: ghép 2 bảng theo product_id — mỗi dòng return được gắn thêm category của sản phẩm đó.</span></div>
+  <div class="code-block">sw = merged[merged["category"] == "Streetwear"]</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Lọc chỉ giữ lại những dòng có category = Streetwear.</span></div>
+  <div class="code-block">sw["return_reason"].value_counts().idxmax()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text"><span class="code-inline">value_counts()</span>: đếm số lần xuất hiện của mỗi lý do. <span class="code-inline">idxmax()</span>: lấy lý do có số lần nhiều nhất.</span></div>
+</div>
+
+<div id="q4" class="qpanel">
+  <div class="goal-box">Mục tiêu: Traffic source nào có bounce rate trung bình thấp nhất</div>
+  <div class="section-label">Các bước tư duy</div>
+  <div class="step"><div class="step-num">1</div><div class="step-body">Nhóm tất cả bản ghi web_traffic theo traffic_source</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-body">Tính trung bình bounce_rate trong mỗi nhóm</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-body">Tìm nhóm có giá trị nhỏ nhất</div></div>
+  <div class="section-label">Giải thích từng dòng</div>
+  <div class="code-block">web.groupby("traffic_source")["bounce_rate"].mean().idxmin()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Câu này chỉ 1 dòng vì logic đơn giản. <span class="code-inline">groupby</span> nhóm theo source, <span class="code-inline">.mean()</span> tính trung bình bounce rate mỗi source, <span class="code-inline">.idxmin()</span> trả về tên source có bounce rate thấp nhất.</span></div>
+  <div style="font-size:13px; color:var(--color-text-secondary); margin-top:10px;">Bounce rate thấp = người dùng xem nhiều trang hơn = gắn kết tốt hơn → source đó chất lượng hơn.</div>
+</div>
+
+<div id="q5" class="qpanel">
+  <div class="goal-box">Mục tiêu: Tính % dòng trong order_items có promo_id khác null</div>
+  <div class="section-label">Trick quan trọng: True/False = 1/0</div>
+  <div style="font-size:13px; color:var(--color-text-secondary); margin-bottom:14px;">Trong Python, <span class="code-inline">True = 1</span> và <span class="code-inline">False = 0</span>. Vì vậy <span class="code-inline">.mean()</span> của một cột True/False chính là tỷ lệ True.</div>
+  <div class="section-label">Giải thích từng dòng</div>
+  <div class="code-block">items["promo_id"].notna()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Tạo ra một cột True/False: True nếu promo_id có giá trị (không null), False nếu null (không có khuyến mãi).</span></div>
+  <div class="code-block">.mean() * 100</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text"><span class="code-inline">.mean()</span> tính trung bình của cột True/False = tỷ lệ True = tỷ lệ dòng có promo. Nhân 100 để ra phần trăm. Ví dụ nếu 39% dòng có promo → kết quả là 39.0.</span></div>
+</div>
+
+<div id="q6" class="qpanel">
+  <div class="goal-box">Mục tiêu: Nhóm tuổi nào có số đơn trung bình / khách hàng cao nhất</div>
+  <div class="section-label">Tại sao phải join 2 bảng?</div>
+  <div class="join-diagram">
+    <div class="table-pill">orders.csv</div>
+    <div style="text-align:center"><div class="join-arrow">——join——</div><div class="join-key">customer_id</div></div>
+    <div class="table-pill">customers.csv</div>
+  </div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;"><span class="code-inline">orders</span> có số đơn nhưng không có age_group. <span class="code-inline">customers</span> có age_group nhưng không có số đơn. Phải ghép.</div>
+  <div class="section-label">Giải thích từng dòng</div>
+  <div class="code-block">order_counts = orders.groupby("customer_id").size().reset_index(name="n_orders")</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Đếm số đơn của mỗi khách. <span class="code-inline">.size()</span> đếm số dòng trong mỗi nhóm. <span class="code-inline">reset_index(name="n_orders")</span>: chuyển kết quả thành bảng có 2 cột: customer_id và n_orders.</span></div>
+  <div class="code-block">cust = customers[customers["age_group"].notna()]</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Loại bỏ khách hàng không có thông tin age_group (đề yêu cầu).</span></div>
+  <div class="code-block">cust = cust.merge(order_counts, on="customer_id", how="left")</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Ghép số đơn vào bảng khách hàng. <span class="code-inline">how="left"</span>: giữ tất cả khách dù họ chưa có đơn nào (n_orders sẽ = NaN, sau đó fillna(0)).</span></div>
+  <div class="code-block">cust.groupby("age_group")["n_orders"].mean().idxmax()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Nhóm theo age_group, tính trung bình số đơn trong mỗi nhóm tuổi, lấy nhóm có giá trị lớn nhất.</span></div>
+</div>
+
+<div id="q7" class="qpanel">
+  <div class="goal-box">Mục tiêu: Vùng (region) nào có tổng revenue cao nhất — phải join 3 bảng</div>
+  <div class="section-label">Tại sao không dùng sales.csv trực tiếp?</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;"><span class="code-inline">sales.csv</span> chỉ có tổng revenue theo ngày, không có thông tin region. Phải tính từ order_items → orders → geography.</div>
+  <div class="section-label">Luồng join</div>
+  <div class="join-diagram">
+    <div class="table-pill">order_items</div>
+    <div style="text-align:center"><div class="join-arrow">→</div><div class="join-key">order_id</div></div>
+    <div class="table-pill">orders</div>
+    <div style="text-align:center"><div class="join-arrow">→</div><div class="join-key">zip</div></div>
+    <div class="table-pill">geography</div>
+  </div>
+  <div class="section-label">Giải thích từng dòng</div>
+  <div class="code-block">items["line_rev"] = items["quantity"]*items["unit_price"] - items["discount_amount"]</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Tính revenue thực của mỗi dòng sản phẩm: số lượng × đơn giá − giảm giá. Đây là revenue thuần sau khuyến mãi.</span></div>
+  <div class="code-block">order_rev = items.groupby("order_id")["line_rev"].sum().reset_index()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Cộng tất cả dòng sản phẩm trong cùng 1 đơn → ra tổng revenue của đơn đó.</span></div>
+  <div class="code-block">merged = orders[["order_id","zip"]].merge(geo[["zip","region"]], on="zip")</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Ghép orders với geography qua cột zip để lấy thông tin region của mỗi đơn hàng.</span></div>
+  <div class="code-block">merged.merge(order_rev, on="order_id").groupby("region")["line_rev"].sum()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Ghép tiếp revenue vào, rồi nhóm theo region và cộng tổng. Kết quả: tổng revenue của mỗi vùng.</span></div>
+</div>
+
+<div id="q8" class="qpanel">
+  <div class="goal-box">Mục tiêu: Payment method phổ biến nhất trong đơn có status = cancelled</div>
+  <div class="section-label">Giải thích từng dòng</div>
+  <div class="code-block">cancelled = orders[orders["order_status"] == "cancelled"]</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Lọc bảng orders, chỉ giữ lại những dòng có order_status là "cancelled". Dấu <span class="code-inline">==</span> so sánh từng dòng với chuỗi "cancelled".</span></div>
+  <div class="code-block">cancelled["payment_method"].value_counts()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Đếm số lần xuất hiện của mỗi phương thức thanh toán trong các đơn cancelled. Kết quả sắp xếp giảm dần — cái đầu tiên là phổ biến nhất.</span></div>
+  <div class="code-block">.idxmax()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Lấy tên phương thức có count cao nhất.</span></div>
+</div>
+
+<div id="q9" class="qpanel">
+  <div class="goal-box">Mục tiêu: Size nào (S/M/L/XL) có tỷ lệ returns/order_items cao nhất</div>
+  <div class="section-label">Công thức</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;">Return rate theo size = số bản ghi trong returns / số dòng trong order_items (cùng size). Phải join cả 2 bảng với products để lấy cột size.</div>
+  <div class="section-label">Giải thích từng dòng</div>
+  <div class="code-block">items_s = items.merge(products[["product_id","size"]], on="product_id")</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Ghép order_items với products để biết size của từng dòng sản phẩm trong đơn.</span></div>
+  <div class="code-block">ret_s = returns.merge(products[["product_id","size"]], on="product_id")</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Tương tự — ghép returns với products để biết size của sản phẩm bị trả.</span></div>
+  <div class="code-block">total   = items_s[items_s["size"].isin(["S","M","L","XL"])].groupby("size").size()
+ret_cnt = ret_s[ret_s["size"].isin(["S","M","L","XL"])].groupby("size").size()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text"><span class="code-inline">.isin([...])</span>: lọc chỉ 4 size được hỏi. <span class="code-inline">groupby("size").size()</span>: đếm số dòng mỗi size. <span class="code-inline">total</span> = tổng đã mua, <span class="code-inline">ret_cnt</span> = số lần bị trả.</span></div>
+  <div class="code-block">rate = ret_cnt / total</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Pandas chia 2 Series theo cùng index (size) → ra tỷ lệ return của từng size. Size nào có rate cao nhất là đáp án.</span></div>
+</div>
+
+<div id="q10" class="qpanel">
+  <div class="goal-box">Mục tiêu: Kế hoạch trả góp (số kỳ) nào có payment_value trung bình cao nhất</div>
+  <div class="section-label">Giải thích từng dòng</div>
+  <div class="code-block">payments.groupby("installments")["payment_value"].mean()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Nhóm theo số kỳ trả góp (1, 3, 6, 12...), tính trung bình payment_value trong mỗi nhóm. Kỳ trả góp càng nhiều thường đi kèm đơn hàng giá trị cao hơn.</span></div>
+  <div class="code-block">.idxmax()</div>
+  <div class="line-explain"><span class="arrow">→</span><span class="explain-text">Lấy số kỳ có payment_value trung bình cao nhất → đó là đáp án.</span></div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-top:10px;">Câu này đơn giản nhất — chỉ dùng 1 bảng, 1 dòng code.</div>
+</div>
+
+</div>
+
+<script>
+function showQ(id, btn) {
+  document.querySelectorAll('.qpanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
