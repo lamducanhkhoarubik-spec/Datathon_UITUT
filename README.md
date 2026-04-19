@@ -194,15 +194,7 @@ datathon-2026/
 
 ---
 
-## Timeline
 
-| Deadline | Task |
-|---|---|
-| Tonight | Setup GitHub, assign tasks, first draft |
-| Tomorrow morning | MCQ finalized ✅ |
-| Tomorrow afternoon | EDA draft complete with charts |
-| Tomorrow evening | First Kaggle submission |
-| Before final deadline | Report complete, GitHub pushed public |
 
 ---
 
