@@ -1,4 +1,4 @@
-# 🏆 Datathon 2026 – The Grid Breakers (UIT & UT Collaboration)
+# 🏆 Datathon 2026 – The Grid Breakers (HCM-UIT & HCM-UT Collaboration)
 
 ### Breaking Business Boundaries with Data
 
@@ -18,3 +18,4 @@ This repository showcases our work for Datathon 2026, including data analysis, v
 
 ¹ Ho Chi Minh City University of Technology, VNU-HCM, Vietnam  
 ² Ho Chi Minh City University of Information Technology, VNU-HCM, Vietnam
+## Some regulations
