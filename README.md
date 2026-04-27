@@ -28,10 +28,10 @@ This repository showcases our work for Datathon 2026, including data analysis, v
 | Member | Part | Task | Output |
 |---|---|---|---|
 | A | MCQ ✅ | Query all 10 multiple choice questions from data | `answers.txt` |
-| B | EDA — Descriptive | Revenue trends, product breakdown, customer profile | 3-4 charts + insight |
+| B | EDA — Descriptive ✅| Revenue trends, product breakdown, customer profile | 3-4 charts + insight |
 | C | EDA — Diagnostic | Promo effectiveness, return reasons, customer behavior | 3-4 charts + insight |
 | D | EDA — Predictive + Prescriptive | Inventory forecast, promo optimization, personalization | 3-4 charts + insight |
-| E | Forecasting | ML pipeline, feature engineering, Kaggle submission | `submission.csv` |
+| E | Forecasting ✅| ML pipeline, feature engineering, Kaggle submission | `submission.csv` |
 | F | Report | LaTeX NeurIPS template, compile charts + insights | `report.pdf` |
 
 ---
