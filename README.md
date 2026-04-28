@@ -160,6 +160,17 @@ train_test_split(X, y, random_state=42)
 
 ```
 datathon-2026/
+├── code/
+│   ├── eda/
+│   │   ├── Analysis.html
+│   │   ├── descriptive.ipynb
+│   │   ├── diagnostic.ipynb
+│   │   ├── predictive.ipynb
+│   │   ├── predictive_v2_annotated.ipynb
+│   │   ├── submission.csv
+│   │   ├── submission_gridbreaker_final.csv
+│   │   ├── submission_recursive_final.csv
+│   │   └── xgb_submission.csv
 ├── Data/
 │   ├── customers.csv
 │   ├── geography.csv
@@ -179,17 +190,10 @@ datathon-2026/
 │   ├── mcq_explain.html
 │   ├── multiple_choice.py
 │   └── solve_mcq.ipynb
-├── code/
-│   ├── eda/
-│   │   ├── descriptive.ipynb
-│   │   ├── diagnostic.ipynb
-│   │   └── predictive_prescriptive.ipynb
-│   └── forecasting/
-│       └── forecast_pipeline.ipynb
 ├── report/
-│   └── main.tex
-├── submission.csv
-└── README.md
+│   └── Datathon_contest.pdf
+├── README.md
+└── test_connection.txt
 ```
 
 ---
